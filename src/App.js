@@ -4,19 +4,41 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import About from "./components/About";
 import NoteState from "./context/notes/NoteState";
+import Alert from "./components/Alert";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import { useState } from "react";
 
 function App() {
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (message, type) => {
+    setAlert({
+      msg: message,
+      type: type,
+    });
+    setTimeout(() => {
+      setAlert(null);
+    }, 1500);
+  };
+
   return (
     <>
       <NoteState>
         <Router>
           <Navbar />
-          <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/about" element={<About />} />
-          </Routes>
-
-          <h1>This is CloudNotebook</h1>
+          <Alert alert={alert} />
+          <div className="container text-center mb-5">
+            <h1>This is your CloudNotebook</h1>
+          </div>
+          <div className="container">
+            <Routes>
+              <Route exact path="/" element={<Home showAlert={showAlert}/>} />
+              <Route exact path="/about" element={<About />} />
+              <Route exact path="/login" element={<Login showAlert={showAlert}/>} />
+              <Route exact path="/signup" element={<Signup showAlert={showAlert}/>} />
+            </Routes>
+          </div>
         </Router>
       </NoteState>
     </>
